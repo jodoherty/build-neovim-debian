@@ -1,9 +1,13 @@
 #!/bin/sh
 
 set -e
-podman pull debian:bookworm
-podman build debian-builder -t neovim-debian-builder
-mkdir -p output
-podman run -i --rm \
-  -v "`pwd`/output:/output" \
-  neovim-debian-builder /bin/sh < build_nvim.sh
+
+for release in bullseye bookworm
+do
+  podman pull debian:$release
+  podman build debian-$release-builder -t neovim-debian-$release-builder
+  mkdir -p output-$release
+  podman run -i --rm \
+    -v "`pwd`/output-$release:/output" \
+    neovim-debian-$release-builder /bin/sh < build_nvim.sh
+done

@@ -1,0 +1,14 @@
+FROM debian:bookworm
+
+RUN mkdir /src && cd /src && mkdir /output
+
+WORKDIR /src
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      build-essential ninja-build cmake git \
+      gettext file \
+      luajit libluajit-5.1-dev lua-mpack \
+      lua-lpeg libunibilium-dev libmsgpack-dev libtermkey-dev
+
+VOLUME /output
